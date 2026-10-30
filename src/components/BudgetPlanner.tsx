@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { EventItem, BudgetItem } from '../types';
 import { StorageService } from '../services/storageService';
+import { calculateBudgetMetrics } from '../utils/calculations';
 
 interface BudgetPlannerProps {
   event: EventItem | null;
@@ -40,13 +41,14 @@ export const BudgetPlanner: React.FC<BudgetPlannerProps> = ({
   const [newCatNotes, setNewCatNotes] = useState('');
   const [saveSuccess, setSaveSuccess] = useState(false);
 
-  // Exact mathematical calculation from category values!
-  const totalPlanned = categories.reduce((sum, item) => sum + (Number(item.allocatedAmount) || 0), 0);
-  const totalActual = categories.reduce((sum, item) => sum + (Number(item.actualAmount) || 0), 0);
-  const remainingBudget = totalBudget - totalPlanned;
-  const utilizationPercentage =
-    totalBudget > 0 ? Math.round((totalPlanned / totalBudget) * 100) : 0;
-  const isOverBudget = totalPlanned > totalBudget;
+  // Exact mathematical calculation from modular utility
+  const {
+    totalPlanned,
+    totalActual,
+    remainingBudget,
+    utilizationPercentage,
+    isOverBudget,
+  } = calculateBudgetMetrics(totalBudget, categories);
 
   const handleUpdateCategory = (id: string, field: 'allocatedAmount' | 'actualAmount' | 'notes', val: any) => {
     const updated = categories.map((cat) => {

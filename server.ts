@@ -5,6 +5,12 @@ import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import { GoogleGenAI, Type } from '@google/genai';
+import {
+  hashPasswordScrypt,
+  hashPasswordLegacy,
+  verifyPassword,
+  isLegacyHash,
+} from './src/utils/authSecurity';
 
 dotenv.config();
 
@@ -112,7 +118,7 @@ interface DatabaseSchema {
 }
 
 function hashPassword(password: string): string {
-  return crypto.createHash('sha256').update(password + PASSWORD_SALT).digest('hex');
+  return hashPasswordScrypt(password);
 }
 
 function getInitialDatabase(): DatabaseSchema {
@@ -437,14 +443,28 @@ app.post('/api/auth/login', (req, res) => {
   }
 
   const normalizedEmail = email.trim().toLowerCase();
-  const user = db.users.find((u) => u.email.toLowerCase() === normalizedEmail);
+  let user = db.users.find((u) => u.email.toLowerCase() === normalizedEmail);
+  if (!user) {
+    const diskDb = loadDatabase();
+    user = diskDb.users.find((u) => u.email.toLowerCase() === normalizedEmail);
+    if (user) {
+      db.users = diskDb.users;
+    }
+  }
   if (!user) {
     return res.status(401).json({ error: 'Invalid email or password.' });
   }
 
-  const computedHash = hashPassword(password);
-  if (user.passwordHash !== computedHash) {
+  const isValid = verifyPassword(password, user.passwordHash);
+  if (!isValid) {
     return res.status(401).json({ error: 'Invalid email or password.' });
+  }
+
+  // Backward-compatible security upgrade: migrate legacy SHA-256 hashes to scrypt upon successful login
+  if (isLegacyHash(user.passwordHash)) {
+    user.passwordHash = hashPasswordScrypt(password);
+    saveDatabase(db);
+    console.log(`[AuthSecurity] Successfully upgraded legacy password hash to scrypt for user ${user.id}`);
   }
 
   const newToken: SessionRecord = {

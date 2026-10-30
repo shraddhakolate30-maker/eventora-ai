@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { EventItem, ReturnGiftPlan, ReturnGiftIdea } from '../types';
 import { StorageService } from '../services/storageService';
+import { calculateReturnGiftMetrics } from '../utils/calculations';
 
 interface ReturnGiftPlannerProps {
   event: EventItem | null;
@@ -62,9 +63,12 @@ export const ReturnGiftPlanner: React.FC<ReturnGiftPlannerProps> = ({
   );
   const [savedSuccess, setSavedSuccess] = useState(false);
 
-  // Exact mathematical calculation: Total = Recipients * Unit Cost
-  const totalGiftCost = recipients * budgetPerGift;
-  const isExceedingAllocated = totalGiftCost > eventAllocatedGiftBudget;
+  // Exact mathematical calculation from modular utility
+  const { totalGiftCost, isExceedingAllocated } = calculateReturnGiftMetrics(
+    recipients,
+    budgetPerGift,
+    eventAllocatedGiftBudget
+  );
 
   const curatedGiftIdeas: ReturnGiftIdea[] = [
     {

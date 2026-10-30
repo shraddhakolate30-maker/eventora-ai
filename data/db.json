@@ -4,7 +4,7 @@
       "id": "user-demo-1",
       "name": "Shraddha Kolate",
       "email": "shraddhakolate30@gmail.com",
-      "passwordHash": "e96fc76e7ef8ddf1276c866084b98d1f8a32947a5e933ce6762c7a9d4c9a9e4f",
+      "passwordHash": "scrypt:8d4736512bc4521f6b7721c1f01508bc:642083ae2c305e73be55420e16a29b3241d557cb7c62176d413b77acd3511141449898b6a1347c2ea7b59d66c185b7ec20b62c542421e3bdb391c6d01041139b",
       "createdAt": "2026-10-20T09:00:00Z"
     },
     {
@@ -41,6 +41,153 @@
       "email": "audit_user_b_1793348867985@eventora.test",
       "passwordHash": "8102d36477d85da4f9840d6957c7bd417bb4b597f5ec83c961bb1a1616c38687",
       "createdAt": "2026-10-30T08:27:47.992Z"
+    },
+    {
+      "id": "user-1793361110624",
+      "name": "Organizer Alpha",
+      "email": "tester_a_1793361110493@example.com",
+      "passwordHash": "fd1650379f616a96ee6deefb4d72cc127328904d10662de809a392f774d85069",
+      "createdAt": "2026-10-30T11:51:50.624Z"
+    },
+    {
+      "id": "user-1793361110649",
+      "name": "Organizer Beta",
+      "email": "tester_b_1793361110493@example.com",
+      "passwordHash": "92bc301b6bcc5d4bbb55a10dc4fed720d3ac852c5da7dd06df9b2dbebef4389d",
+      "createdAt": "2026-10-30T11:51:50.649Z"
+    },
+    {
+      "id": "user-1793361211830",
+      "name": "Organizer Alpha",
+      "email": "tester_a_1793361211716@example.com",
+      "passwordHash": "fd1650379f616a96ee6deefb4d72cc127328904d10662de809a392f774d85069",
+      "createdAt": "2026-10-30T11:53:31.830Z"
+    },
+    {
+      "id": "user-1793361211844",
+      "name": "Organizer Beta",
+      "email": "tester_b_1793361211716@example.com",
+      "passwordHash": "92bc301b6bcc5d4bbb55a10dc4fed720d3ac852c5da7dd06df9b2dbebef4389d",
+      "createdAt": "2026-10-30T11:53:31.844Z"
+    },
+    {
+      "id": "user-1793361231808",
+      "name": "Organizer Alpha",
+      "email": "tester_a_1793361231691@example.com",
+      "passwordHash": "fd1650379f616a96ee6deefb4d72cc127328904d10662de809a392f774d85069",
+      "createdAt": "2026-10-30T11:53:51.808Z"
+    },
+    {
+      "id": "user-1793361231823",
+      "name": "Organizer Beta",
+      "email": "tester_b_1793361231691@example.com",
+      "passwordHash": "92bc301b6bcc5d4bbb55a10dc4fed720d3ac852c5da7dd06df9b2dbebef4389d",
+      "createdAt": "2026-10-30T11:53:51.823Z"
+    },
+    {
+      "id": "user-1793361263288",
+      "name": "Organizer Alpha",
+      "email": "tester_a_1793361263176@example.com",
+      "passwordHash": "fd1650379f616a96ee6deefb4d72cc127328904d10662de809a392f774d85069",
+      "createdAt": "2026-10-30T11:54:23.288Z"
+    },
+    {
+      "id": "user-1793361263304",
+      "name": "Organizer Beta",
+      "email": "tester_b_1793361263176@example.com",
+      "passwordHash": "92bc301b6bcc5d4bbb55a10dc4fed720d3ac852c5da7dd06df9b2dbebef4389d",
+      "createdAt": "2026-10-30T11:54:23.304Z"
+    },
+    {
+      "id": "user-1793361904110",
+      "name": "Organizer Alpha",
+      "email": "tester_a_1793361903978@example.com",
+      "passwordHash": "fd1650379f616a96ee6deefb4d72cc127328904d10662de809a392f774d85069",
+      "createdAt": "2026-10-30T12:05:04.110Z"
+    },
+    {
+      "id": "user-1793361904124",
+      "name": "Organizer Beta",
+      "email": "tester_b_1793361903978@example.com",
+      "passwordHash": "92bc301b6bcc5d4bbb55a10dc4fed720d3ac852c5da7dd06df9b2dbebef4389d",
+      "createdAt": "2026-10-30T12:05:04.124Z"
+    },
+    {
+      "id": "user-1793362145964",
+      "name": "Organizer Alpha",
+      "email": "tester_a_1793362145832@example.com",
+      "passwordHash": "scrypt:ef886c38c182c63201a1a9946bbe47ae:4a2bbfd83d8187eaa3134ee2324cbde5fec898cbbbe759820f41bdeaaf5bdf453b27ac1e6d0f26d0451d09b82dfdd88a01d369215beb72fb8dfc07c22d9c7a91",
+      "createdAt": "2026-10-30T12:09:06.053Z"
+    },
+    {
+      "id": "user-1793362146192",
+      "name": "Organizer Beta",
+      "email": "tester_b_1793362145832@example.com",
+      "passwordHash": "scrypt:d599a6a40734e83752d65bbf6d14b560:8bfcee73cdc9aeb163f96ce54b501d311431221e012ab722c659417afc18168643bd1744968dace4b2c2301ce1981d7c94ab27ded77d6a11697dc505fe191be1",
+      "createdAt": "2026-10-30T12:09:06.261Z"
+    },
+    {
+      "id": "user-1793362153483",
+      "name": "Scrypt Newcomer",
+      "email": "migrating_user_1793362152985@example.com",
+      "passwordHash": "scrypt:4e53bff461af8417f11317f2bedb5238:7f096cfdc120d2eaf8c8b13235a73496bc310e033fffaf1766f8e9f5b90eb8969b7cc8426bfe21e5fab20949006108958aebdf5ea2dcafba83a1d90190f534bd",
+      "createdAt": "2026-10-30T12:09:13.531Z"
+    },
+    {
+      "id": "user-1793362186519",
+      "name": "Organizer Alpha",
+      "email": "tester_a_1793362186404@example.com",
+      "passwordHash": "scrypt:3b5b224a0e8cab131753bfc3b9a778d1:432487a66ebba5b51eaeb32586c9c693100fce6e2f920fce5833c1bda0ab8c1badcf154ea82dd940f29f3af29a2ad7abacd4c1940644360c85cd7fceb11f85a6",
+      "createdAt": "2026-10-30T12:09:46.569Z"
+    },
+    {
+      "id": "user-1793362186685",
+      "name": "Organizer Beta",
+      "email": "tester_b_1793362186404@example.com",
+      "passwordHash": "scrypt:aa23c7aeab75fbf7e3483cdf0786242e:3e40b04df289c32b94db85dbe9efb1fa3adc8cb2fd5b81cc65eabfd43dd2cd2805a69b50ae4a18766f2bfc0ccc06f6d20c244464a11c7177e4db1d279b0019cc",
+      "createdAt": "2026-10-30T12:09:46.755Z"
+    },
+    {
+      "id": "user-1793362192770",
+      "name": "Scrypt Newcomer",
+      "email": "migrating_user_1793362192271@example.com",
+      "passwordHash": "scrypt:778e3408f7e9a99cca5f586d764b90ad:74ec9bc6979fc3ebf5120d82e87e22f04aaf65ad62439590e15c8b18948b94c1bb429f063e4df078aad31b12f3cddf97fc2a12e441cc3108da676d60cf81c516",
+      "createdAt": "2026-10-30T12:09:52.816Z"
+    },
+    {
+      "id": "user-legacy-1793362192933",
+      "name": "Legacy User",
+      "email": "legacy_migrate_1793362192933@test.com",
+      "passwordHash": "a79f311fac628ca92e5ec455430e94024381482e779a71b1419d817eb40ec1a7",
+      "createdAt": "2026-10-30T12:09:52.933Z"
+    },
+    {
+      "id": "user-1793362216923",
+      "name": "Scrypt Newcomer",
+      "email": "migrating_user_1793362216416@example.com",
+      "passwordHash": "scrypt:5bc93a89dd72de1722fbc1e3d3edec11:545e938ce318a44c7bedc8b81536d1596162fdd16fe4bd597daf2c17461f8aee97e2ca10729341b3ee0012d553706156e4fc065d6edb6e4e575391c0b57802c8",
+      "createdAt": "2026-10-30T12:10:17.006Z"
+    },
+    {
+      "id": "user-legacy-1793362217172",
+      "name": "Legacy User",
+      "email": "legacy_migrate_1793362217172@test.com",
+      "passwordHash": "scrypt:bfd01f6fbf93e96102b9ee457e32cace:e1ea80620678591171e2702a5c35bdf94571d1a6f9e6fc29af0097ccb1147debf38a06c63df941696ecde9b5b302cb6bb900877d764f907c788f07e2d74eaea7",
+      "createdAt": "2026-10-30T12:10:17.172Z"
+    },
+    {
+      "id": "user-1793362217592",
+      "name": "Organizer Alpha",
+      "email": "tester_a_1793362217479@example.com",
+      "passwordHash": "scrypt:d0bd711218c2110c76f9266c1c419534:b83587c14638a27c075375f22c84c839db43140c515be29978b4370ebc7e37dcd7c35da82da5ddcd1cbfcee76a21722626217de9ba11c975fcc824e59faecf47",
+      "createdAt": "2026-10-30T12:10:17.639Z"
+    },
+    {
+      "id": "user-1793362217751",
+      "name": "Organizer Beta",
+      "email": "tester_b_1793362217479@example.com",
+      "passwordHash": "scrypt:8ed0b3cfbab4b88ee02b575d9b59a18c:0a8bc8adafeb3ee6f8615b5b5245acfbffafc44372b4abaa5c608303cc0017599be7fa2a953979c074f2aecf658e58e9880160c7a9c04503167587f3ee6de20b",
+      "createdAt": "2026-10-30T12:10:17.798Z"
     }
   ],
   "sessions": [
@@ -78,9 +225,442 @@
       "token": "token-80c6f8841a7c0f10131a5484f2b476d67f5d830e87622124",
       "userId": "user-1793348867992",
       "createdAt": "2026-10-30T08:27:47.992Z"
+    },
+    {
+      "token": "token-8fb3ef3d5f0a31e0b35b84010a1c386747404bf8766d57ec",
+      "userId": "user-1793361110624",
+      "createdAt": "2026-10-30T11:51:50.625Z"
+    },
+    {
+      "token": "token-8e24171095cda7c7b004b9900fa3c821959b5ce7209d6078",
+      "userId": "user-1793361110624",
+      "createdAt": "2026-10-30T11:51:50.639Z"
+    },
+    {
+      "token": "token-88d84b26673ea7cc581a6d576f8010a0ab9785a9ba1544c0",
+      "userId": "user-1793361110649",
+      "createdAt": "2026-10-30T11:51:50.649Z"
+    },
+    {
+      "token": "token-947dafc5f5e77647f070bcf4b5f3c54a1f83d9a3ce6aa9d5",
+      "userId": "user-1793361211830",
+      "createdAt": "2026-10-30T11:53:31.830Z"
+    },
+    {
+      "token": "token-a21af8e4ccb6b8d09474fab45374daffb7b9ff4348ce29bd",
+      "userId": "user-1793361211830",
+      "createdAt": "2026-10-30T11:53:31.837Z"
+    },
+    {
+      "token": "token-1e232f8e0edc1cfe8b20a080c382b92b0b96a1e3e28fc0df",
+      "userId": "user-1793361211844",
+      "createdAt": "2026-10-30T11:53:31.844Z"
+    },
+    {
+      "token": "token-c2f84559e914b7626723472e2a034352a0d510cdbefd6806",
+      "userId": "user-1793361231808",
+      "createdAt": "2026-10-30T11:53:51.808Z"
+    },
+    {
+      "token": "token-c1fe7d3fe69f9a0de8c6d7d208c6ca36ae029f26e77ad86b",
+      "userId": "user-1793361231808",
+      "createdAt": "2026-10-30T11:53:51.815Z"
+    },
+    {
+      "token": "token-8ecfdb156ad9198a89b4df2ae31a7b7d25b471dc67fae2de",
+      "userId": "user-1793361231823",
+      "createdAt": "2026-10-30T11:53:51.823Z"
+    },
+    {
+      "token": "token-cd80e6b654caebaa9a2f286e2b74e44c31d99ec7a3302f47",
+      "userId": "user-1793361263288",
+      "createdAt": "2026-10-30T11:54:23.288Z"
+    },
+    {
+      "token": "token-155b4d12d01a162865d093b7a4633320409f2b11b1ec71c6",
+      "userId": "user-1793361263288",
+      "createdAt": "2026-10-30T11:54:23.296Z"
+    },
+    {
+      "token": "token-75dcf93c87d369a1464d02edd1e0074a3338a19cd061b317",
+      "userId": "user-1793361263304",
+      "createdAt": "2026-10-30T11:54:23.304Z"
+    },
+    {
+      "token": "token-19bf627cc10318636ee9d78ae3d40a44eb1450756e4ee48b",
+      "userId": "user-1793361904110",
+      "createdAt": "2026-10-30T12:05:04.110Z"
+    },
+    {
+      "token": "token-bd1cf676b54ff4f23a24a9403b5e66cf40b758ec67fafe82",
+      "userId": "user-1793361904110",
+      "createdAt": "2026-10-30T12:05:04.116Z"
+    },
+    {
+      "token": "token-5a3f769ff800776557e5b1415cfa1b644012e497a78043a2",
+      "userId": "user-1793361904124",
+      "createdAt": "2026-10-30T12:05:04.125Z"
+    },
+    {
+      "token": "token-aa72c9460259280181c02b7884b0af4eeaf9733ecc8b4cb0",
+      "userId": "user-1793362145964",
+      "createdAt": "2026-10-30T12:09:06.053Z"
+    },
+    {
+      "token": "token-493403455320049739ef4da1ed9f67c77e5f40ab98f2a5aa",
+      "userId": "user-1793362145964",
+      "createdAt": "2026-10-30T12:09:06.132Z"
+    },
+    {
+      "token": "token-e80f567b1e1469191e23ce67db8c2284ccb223b5182eedbd",
+      "userId": "user-1793362146192",
+      "createdAt": "2026-10-30T12:09:06.261Z"
+    },
+    {
+      "token": "token-53618cfbdb52ad30ef87611222291b75525e1493a19978cd",
+      "userId": "user-1793362153483",
+      "createdAt": "2026-10-30T12:09:13.532Z"
+    },
+    {
+      "token": "token-c15199e8c783313c2b4770385b98a88eeafe47806b2201ae",
+      "userId": "user-1793362153483",
+      "createdAt": "2026-10-30T12:09:13.597Z"
+    },
+    {
+      "token": "token-b8208dbcca58106a5fbd27941df39753762da249463a8eda",
+      "userId": "user-demo-1",
+      "createdAt": "2026-10-30T12:09:13.724Z"
+    },
+    {
+      "token": "token-3a154904ad84c61f54477c43f08d6e782d112fd61a676f36",
+      "userId": "user-1793362186519",
+      "createdAt": "2026-10-30T12:09:46.569Z"
+    },
+    {
+      "token": "token-76bb39d3d7bd8a862ebdde8f6535a92435754e44eddabd9b",
+      "userId": "user-1793362186519",
+      "createdAt": "2026-10-30T12:09:46.625Z"
+    },
+    {
+      "token": "token-5ef108f0a453f6075738e7e330cd4bfdaa54e8e7937d8dfd",
+      "userId": "user-1793362186685",
+      "createdAt": "2026-10-30T12:09:46.755Z"
+    },
+    {
+      "token": "token-c71a786c901cca1ef486ab9df878e115c00ee0c19206c4ab",
+      "userId": "user-1793362192770",
+      "createdAt": "2026-10-30T12:09:52.816Z"
+    },
+    {
+      "token": "token-fe1517183d451f74ea133fbfcc92ee899c6f274f5d737389",
+      "userId": "user-1793362192770",
+      "createdAt": "2026-10-30T12:09:52.879Z"
+    },
+    {
+      "token": "token-0434673e3c6ed8b39123566fed841870b9053a2caca05919",
+      "userId": "user-1793362216923",
+      "createdAt": "2026-10-30T12:10:17.006Z"
+    },
+    {
+      "token": "token-fb9eb244928df519a6f79b041f4f9df266c09e31a36621ed",
+      "userId": "user-1793362216923",
+      "createdAt": "2026-10-30T12:10:17.097Z"
+    },
+    {
+      "token": "token-d8e78588dc016d4f227acd8e1b53d1ec20def151dd1ff0e4",
+      "userId": "user-legacy-1793362217172",
+      "createdAt": "2026-10-30T12:10:17.226Z"
+    },
+    {
+      "token": "token-30b2f6226ec78ff2a392f0ce5e14cd3c80c9836b9998420e",
+      "userId": "user-1793362217592",
+      "createdAt": "2026-10-30T12:10:17.639Z"
+    },
+    {
+      "token": "token-e5722644cd3165e5ea9107a442c6c876d17352f21f7f2778",
+      "userId": "user-1793362217592",
+      "createdAt": "2026-10-30T12:10:17.692Z"
+    },
+    {
+      "token": "token-6eee1c744eb102e55218866cfa986ef569e6fc19143b97c6",
+      "userId": "user-1793362217751",
+      "createdAt": "2026-10-30T12:10:17.798Z"
     }
   ],
   "events": [
+    {
+      "name": "Alpha Annual Gala",
+      "type": "Community Event",
+      "date": "2026-11-20",
+      "location": "Grand Ballroom, Bangalore",
+      "guestCount": 150,
+      "budget": 130000,
+      "currency": "₹",
+      "theme": "Royal Heritage",
+      "venuePreference": "rented",
+      "foodPreference": "buffet",
+      "returnGiftsRequired": true,
+      "priority": "premium_experience",
+      "additionalRequirements": "Acoustic mic setup and stage lighting",
+      "budgetBreakdown": [
+        {
+          "id": "cat-1",
+          "category": "Venue & Banquet",
+          "allocatedAmount": 60000,
+          "actualAmount": 0,
+          "notes": "Main hall",
+          "isEssential": true
+        },
+        {
+          "id": "cat-2",
+          "category": "Catering",
+          "allocatedAmount": 50000,
+          "actualAmount": 0,
+          "notes": "Expanded spread",
+          "isEssential": true
+        },
+        {
+          "id": "cat-3",
+          "category": "Decor & Lighting",
+          "allocatedAmount": 20000,
+          "actualAmount": 0,
+          "notes": "Fairy lights & backdrop",
+          "isEssential": true
+        }
+      ],
+      "shoppingList": [
+        {
+          "id": "s1",
+          "name": "Welcome Garlands",
+          "category": "Decorations",
+          "quantity": 10,
+          "unit": "pc",
+          "estimatedUnitPrice": 300,
+          "isEssential": true,
+          "status": "need_to_buy"
+        }
+      ],
+      "timelineTasks": [
+        {
+          "id": "t1",
+          "title": "Confirm caterer menu",
+          "category": "Catering",
+          "dueDate": "2026-11-10",
+          "dueDescription": "10 days before",
+          "isEssential": true,
+          "isCompleted": false
+        }
+      ],
+      "id": "event-1793361263310",
+      "userId": "user-1793361263288",
+      "createdAt": "2026-10-30T11:54:23.310Z",
+      "updatedAt": "2026-10-30T11:54:28.521Z",
+      "_historyActionType": "plan_modified",
+      "_historyActionTitle": "Plan Modified via AI Chat",
+      "_historyActionSummary": "Budget recalibrated to ₹1,30,000 with 3 updated category allocations."
+    },
+    {
+      "name": "Alpha Annual Gala",
+      "type": "Community Event",
+      "date": "2026-11-20",
+      "location": "Grand Ballroom, Bangalore",
+      "guestCount": 150,
+      "budget": 130000,
+      "currency": "₹",
+      "theme": "Royal Heritage",
+      "venuePreference": "rented",
+      "foodPreference": "buffet",
+      "returnGiftsRequired": true,
+      "priority": "premium_experience",
+      "additionalRequirements": "Acoustic mic setup and stage lighting",
+      "budgetBreakdown": [
+        {
+          "id": "cat-1",
+          "category": "Venue & Banquet",
+          "allocatedAmount": 60000,
+          "actualAmount": 0,
+          "notes": "Main hall",
+          "isEssential": true
+        },
+        {
+          "id": "cat-2",
+          "category": "Catering",
+          "allocatedAmount": 50000,
+          "actualAmount": 0,
+          "notes": "Expanded spread",
+          "isEssential": true
+        },
+        {
+          "id": "cat-3",
+          "category": "Decor & Lighting",
+          "allocatedAmount": 20000,
+          "actualAmount": 0,
+          "notes": "Fairy lights & backdrop",
+          "isEssential": true
+        }
+      ],
+      "shoppingList": [
+        {
+          "id": "s1",
+          "name": "Welcome Garlands",
+          "category": "Decorations",
+          "quantity": 10,
+          "unit": "pc",
+          "estimatedUnitPrice": 300,
+          "isEssential": true,
+          "status": "need_to_buy"
+        }
+      ],
+      "timelineTasks": [
+        {
+          "id": "t1",
+          "title": "Confirm caterer menu",
+          "category": "Catering",
+          "dueDate": "2026-11-10",
+          "dueDescription": "10 days before",
+          "isEssential": true,
+          "isCompleted": false
+        }
+      ],
+      "id": "event-1793361231828",
+      "userId": "user-1793361231808",
+      "createdAt": "2026-10-30T11:53:51.828Z",
+      "updatedAt": "2026-10-30T11:53:58.017Z",
+      "_historyActionType": "plan_modified",
+      "_historyActionTitle": "Plan Modified via AI Chat",
+      "_historyActionSummary": "Budget recalibrated to ₹1,30,000 with 3 updated category allocations."
+    },
+    {
+      "name": "Alpha Annual Gala",
+      "type": "Community Event",
+      "date": "2026-11-20",
+      "location": "Grand Ballroom, Bangalore",
+      "guestCount": 150,
+      "budget": 130000,
+      "currency": "₹",
+      "theme": "Royal Heritage",
+      "venuePreference": "rented",
+      "foodPreference": "buffet",
+      "returnGiftsRequired": true,
+      "priority": "premium_experience",
+      "additionalRequirements": "Acoustic mic setup and stage lighting",
+      "budgetBreakdown": [
+        {
+          "id": "cat-1",
+          "category": "Venue & Banquet",
+          "allocatedAmount": 60000,
+          "actualAmount": 0,
+          "notes": "Main hall",
+          "isEssential": true
+        },
+        {
+          "id": "cat-2",
+          "category": "Catering",
+          "allocatedAmount": 50000,
+          "actualAmount": 0,
+          "notes": "Expanded spread",
+          "isEssential": true
+        },
+        {
+          "id": "cat-3",
+          "category": "Decor & Lighting",
+          "allocatedAmount": 20000,
+          "actualAmount": 0,
+          "notes": "Fairy lights & backdrop",
+          "isEssential": true
+        }
+      ],
+      "shoppingList": [
+        {
+          "id": "s1",
+          "name": "Welcome Garlands",
+          "category": "Decorations",
+          "quantity": 10,
+          "unit": "pc",
+          "estimatedUnitPrice": 300,
+          "isEssential": true,
+          "status": "need_to_buy"
+        }
+      ],
+      "timelineTasks": [
+        {
+          "id": "t1",
+          "title": "Confirm caterer menu",
+          "category": "Catering",
+          "dueDate": "2026-11-10",
+          "dueDescription": "10 days before",
+          "isEssential": true,
+          "isCompleted": false
+        }
+      ],
+      "id": "event-1793361211850",
+      "userId": "user-1793361211830",
+      "createdAt": "2026-10-30T11:53:31.850Z",
+      "updatedAt": "2026-10-30T11:53:36.887Z",
+      "_historyActionType": "plan_modified",
+      "_historyActionTitle": "Plan Modified via AI Chat",
+      "_historyActionSummary": "Budget recalibrated to ₹1,30,000 with 3 updated category allocations."
+    },
+    {
+      "name": "Alpha Annual Gala",
+      "type": "Community Event",
+      "date": "2026-11-20",
+      "location": "Grand Ballroom, Bangalore",
+      "guestCount": 150,
+      "budget": 120000,
+      "currency": "₹",
+      "theme": "Royal Heritage",
+      "venuePreference": "rented",
+      "foodPreference": "buffet",
+      "returnGiftsRequired": true,
+      "priority": "premium_experience",
+      "additionalRequirements": "Acoustic mic setup and stage lighting",
+      "budgetBreakdown": [
+        {
+          "id": "b1",
+          "category": "Venue & Banquet",
+          "allocatedAmount": 60000,
+          "actualAmount": 0,
+          "notes": "Hall rental",
+          "isEssential": true
+        },
+        {
+          "id": "b2",
+          "category": "Catering",
+          "allocatedAmount": 40000,
+          "actualAmount": 0,
+          "notes": "150 plates",
+          "isEssential": true
+        }
+      ],
+      "shoppingList": [
+        {
+          "id": "s1",
+          "name": "Welcome Garlands",
+          "category": "Decorations",
+          "quantity": 10,
+          "unit": "pc",
+          "estimatedUnitPrice": 300,
+          "isEssential": true,
+          "status": "need_to_buy"
+        }
+      ],
+      "timelineTasks": [
+        {
+          "id": "t1",
+          "title": "Confirm caterer menu",
+          "category": "Catering",
+          "dueDate": "2026-11-10",
+          "dueDescription": "10 days before",
+          "isEssential": true,
+          "isCompleted": false
+        }
+      ],
+      "id": "event-1793361110656",
+      "userId": "user-demo-1",
+      "createdAt": "2026-10-30T11:51:50.656Z",
+      "updatedAt": "2026-10-30T11:51:50.656Z"
+    },
     {
       "id": "demo-bday-1",
       "userId": "user-demo-1",
@@ -525,6 +1105,96 @@
     }
   ],
   "history": [
+    {
+      "id": "hist-1793361268521-m8g9",
+      "userId": "user-1793361263288",
+      "eventId": "event-1793361263310",
+      "timestamp": "2026-10-30T11:54:28.521Z",
+      "actionType": "plan_modified",
+      "title": "Plan Modified via AI Chat",
+      "summary": "Budget recalibrated to ₹1,30,000 with 3 updated category allocations."
+    },
+    {
+      "id": "hist-1793361263329-1bf9",
+      "userId": "user-1793361263288",
+      "eventId": "event-1793361263310",
+      "timestamp": "2026-10-30T11:54:23.329Z",
+      "actionType": "plan_modified",
+      "title": "Updated Gala Details",
+      "summary": "Refined venue booking details"
+    },
+    {
+      "id": "hist-1793361263310-mzqn",
+      "userId": "user-1793361263288",
+      "eventId": "event-1793361263310",
+      "timestamp": "2026-10-30T11:54:23.310Z",
+      "actionType": "event_created",
+      "title": "Celebration Created",
+      "summary": "\"Alpha Annual Gala\" (Community Event) created with ₹1,20,000 budget."
+    },
+    {
+      "id": "hist-1793361238017-3e8n",
+      "userId": "user-1793361231808",
+      "eventId": "event-1793361231828",
+      "timestamp": "2026-10-30T11:53:58.017Z",
+      "actionType": "plan_modified",
+      "title": "Plan Modified via AI Chat",
+      "summary": "Budget recalibrated to ₹1,30,000 with 3 updated category allocations."
+    },
+    {
+      "id": "hist-1793361231848-r5bg",
+      "userId": "user-1793361231808",
+      "eventId": "event-1793361231828",
+      "timestamp": "2026-10-30T11:53:51.848Z",
+      "actionType": "plan_modified",
+      "title": "Updated Gala Details",
+      "summary": "Refined venue booking details"
+    },
+    {
+      "id": "hist-1793361231828-fagl",
+      "userId": "user-1793361231808",
+      "eventId": "event-1793361231828",
+      "timestamp": "2026-10-30T11:53:51.828Z",
+      "actionType": "event_created",
+      "title": "Celebration Created",
+      "summary": "\"Alpha Annual Gala\" (Community Event) created with ₹1,20,000 budget."
+    },
+    {
+      "id": "hist-1793361216888-m2nj",
+      "userId": "user-1793361211830",
+      "eventId": "event-1793361211850",
+      "timestamp": "2026-10-30T11:53:36.888Z",
+      "actionType": "plan_modified",
+      "title": "Plan Modified via AI Chat",
+      "summary": "Budget recalibrated to ₹1,30,000 with 3 updated category allocations."
+    },
+    {
+      "id": "hist-1793361211869-ws5c",
+      "userId": "user-1793361211830",
+      "eventId": "event-1793361211850",
+      "timestamp": "2026-10-30T11:53:31.869Z",
+      "actionType": "plan_modified",
+      "title": "Updated Gala Details",
+      "summary": "Refined venue booking details"
+    },
+    {
+      "id": "hist-1793361211851-r9q0",
+      "userId": "user-1793361211830",
+      "eventId": "event-1793361211850",
+      "timestamp": "2026-10-30T11:53:31.851Z",
+      "actionType": "event_created",
+      "title": "Celebration Created",
+      "summary": "\"Alpha Annual Gala\" (Community Event) created with ₹1,20,000 budget."
+    },
+    {
+      "id": "hist-1793361110667-d3oy",
+      "userId": "user-demo-1",
+      "eventId": "event-1793361110656",
+      "timestamp": "2026-10-30T11:51:50.667Z",
+      "actionType": "event_created",
+      "title": "Celebration Created",
+      "summary": "\"Alpha Annual Gala\" (Community Event) created with ₹1,20,000 budget."
+    },
     {
       "id": "hist-1793348868019-wk6r",
       "userId": "user-demo-1",

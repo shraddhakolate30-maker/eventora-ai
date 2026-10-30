@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { EventItem, TimelineTask } from '../types';
 import { StorageService } from '../services/storageService';
+import { calculateTimelineProgress } from '../utils/calculations';
 
 interface TimelineTasksProps {
   event: EventItem | null;
@@ -43,8 +44,8 @@ export const TimelineTasks: React.FC<TimelineTasksProps> = ({
   const [newDueDesc, setNewDueDesc] = useState('3 days before');
   const [newEssential, setNewEssential] = useState(true);
 
-  const completedCount = tasks.filter((t) => t.isCompleted).length;
-  const progressPercent = tasks.length > 0 ? Math.round((completedCount / tasks.length) * 100) : 0;
+  // Exact mathematical calculation from modular utility
+  const { completedCount, progressPercent } = calculateTimelineProgress(tasks);
 
   const handleToggleTask = (id: string) => {
     const updated = tasks.map((t) => (t.id === id ? { ...t, isCompleted: !t.isCompleted } : t));

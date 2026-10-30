@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { EventItem, ShoppingItem } from '../types';
 import { StorageService } from '../services/storageService';
+import { calculateShoppingTotals } from '../utils/calculations';
 
 interface ShoppingAssistantProps {
   event: EventItem | null;
@@ -52,15 +53,8 @@ export const ShoppingAssistant: React.FC<ShoppingAssistantProps> = ({
   const [newItemPrice, setNewItemPrice] = useState(250);
   const [newItemEssential, setNewItemEssential] = useState(true);
 
-  // Exact mathematical calculations
-  const totalShoppingEstimated = items.reduce(
-    (sum, item) => sum + (item.quantity * item.estimatedUnitPrice),
-    0
-  );
-  const totalPurchased = items
-    .filter((i) => i.status === 'purchased')
-    .reduce((sum, item) => sum + (item.quantity * item.estimatedUnitPrice), 0);
-  const totalPending = totalShoppingEstimated - totalPurchased;
+  // Exact mathematical calculations from modular utility
+  const { totalShoppingEstimated, totalPurchased, totalPending } = calculateShoppingTotals(items);
 
   const handleUpdateItem = (id: string, updates: Partial<ShoppingItem>) => {
     const updated = items.map((item) => (item.id === id ? { ...item, ...updates } : item));
