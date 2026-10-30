@@ -1,0 +1,7 @@
+{
+  "name": "EVENTORA AI",
+  "description": "Plan Smarter. Shop Better. Celebrate Together. AI-powered event planning, smart budgeting, shopping assistant, and return gift planner.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
