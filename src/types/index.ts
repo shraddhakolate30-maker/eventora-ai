@@ -220,3 +220,30 @@ export interface LocalWholesaleHub {
   bestTimeToVisit: string;
   insiderTips: string;
 }
+
+export interface UserRecord {
+  id: string;
+  name: string;
+  email: string;
+  passwordHash: string;
+  createdAt: string;
+}
+
+export interface SessionRecord {
+  token: string;
+  userId: string;
+  createdAt: string;
+}
+
+export interface DatabaseSchema {
+  users: UserRecord[];
+  sessions: SessionRecord[];
+  events: EventItem[];
+  history: HistoryRecord[];
+}
+
+export interface ApiErrorResponse {
+  success: false;
+  error: string;
+  statusCode: number;
+}

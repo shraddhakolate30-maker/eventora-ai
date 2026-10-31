@@ -70,7 +70,10 @@ describe('Backward-Compatible Password Migration API Integration', () => {
   it('ensures new signups immediately receive scrypt hashes', async () => {
     const signupRes = await fetch(`${BASE_URL}/api/auth/signup`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-test-bypass': 'true',
+      },
       body: JSON.stringify({
         name: 'Scrypt Newcomer',
         email: testEmail,
@@ -84,7 +87,10 @@ describe('Backward-Compatible Password Migration API Integration', () => {
 
     // Verify session works
     const meRes = await fetch(`${BASE_URL}/api/auth/me`, {
-      headers: { Authorization: `Bearer ${data.token}` },
+      headers: {
+        Authorization: `Bearer ${data.token}`,
+        'x-test-bypass': 'true',
+      },
     });
     expect(meRes.status).toBe(200);
     const meData = await meRes.json();
@@ -95,7 +101,10 @@ describe('Backward-Compatible Password Migration API Integration', () => {
     // Correct login
     const goodLogin = await fetch(`${BASE_URL}/api/auth/login`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-test-bypass': 'true',
+      },
       body: JSON.stringify({
         email: testEmail,
         password: testPassword,
@@ -109,7 +118,10 @@ describe('Backward-Compatible Password Migration API Integration', () => {
     // Incorrect login
     const badLogin = await fetch(`${BASE_URL}/api/auth/login`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-test-bypass': 'true',
+      },
       body: JSON.stringify({
         email: testEmail,
         password: 'IncorrectPassword',
@@ -143,7 +155,10 @@ describe('Backward-Compatible Password Migration API Integration', () => {
       // Attempt login
       const loginRes = await fetch(`${BASE_URL}/api/auth/login`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-test-bypass': 'true',
+        },
         body: JSON.stringify({
           email: legacyEmail,
           password: legacyPass,

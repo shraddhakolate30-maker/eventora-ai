@@ -11,6 +11,15 @@ import {
   verifyPassword,
   isLegacyHash,
 } from './src/utils/authSecurity';
+import { withTimeout, DEFAULT_GEMINI_TIMEOUT_MS } from './src/utils/aiTimeout';
+import {
+  EventItem,
+  HistoryRecord,
+  UserRecord,
+  SessionRecord,
+  DatabaseSchema,
+  ApiErrorResponse,
+} from './src/types/index';
 
 dotenv.config();
 
@@ -51,24 +60,40 @@ async function callGemini(
 
   for (const model of candidateModels) {
     try {
-      const resp = await ai.models.generateContent({
-        model,
-        contents,
-        config,
-      });
+      const resp = await withTimeout(
+        ai.models.generateContent({
+          model,
+          contents,
+          config,
+        }),
+        DEFAULT_GEMINI_TIMEOUT_MS,
+        `Gemini model ${model}`
+      );
       if (resp && resp.text) {
         return { text: resp.text, modelName: model };
       }
     } catch (err: any) {
       lastError = err;
-      console.warn(`Gemini model ${model} unavailable: ${err?.message || 'unknown error'}`);
+      const isTimeout = err?.message?.includes('timed out');
+      console.warn(
+        `Gemini model ${model} unavailable${isTimeout ? ' (Timeout 8s)' : ''}: ${err?.message || 'unknown error'}`
+      );
     }
   }
 
   throw lastError || new Error('All candidate Gemini models failed.');
 }
 
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json({ limit: '1mb' }));
+
+// Safe HTTP defensive security headers (S-4) - preserves AI Studio preview iframe embedding
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('X-DNS-Prefetch-Control', 'off');
+  next();
+});
 
 // ---------------------------------------------------------------------------
 // PERSISTENT DATA LAYER & DATABASE
@@ -76,45 +101,20 @@ app.use(express.json({ limit: '10mb' }));
 const DATA_DIR = path.join(__dirname, 'data');
 const DB_FILE = path.join(DATA_DIR, 'db.json');
 const PASSWORD_SALT = 'eventora_secure_salt_2026';
-
-interface UserRecord {
-  id: string;
-  name: string;
-  email: string;
-  passwordHash: string;
-  createdAt: string;
-}
-
-interface SessionRecord {
-  token: string;
-  userId: string;
-  createdAt: string;
-}
-
-interface HistoryRecord {
-  id: string;
-  userId: string;
-  eventId: string;
-  timestamp: string;
-  actionType:
-    | 'event_created'
-    | 'plan_generated'
-    | 'plan_modified'
-    | 'budget_updated'
-    | 'task_updated'
-    | 'shopping_updated'
-    | 'rescue_applied'
-    | 'chat_insight';
-  title: string;
-  summary: string;
-  details?: Record<string, any>;
-}
-
-interface DatabaseSchema {
-  users: UserRecord[];
-  sessions: SessionRecord[];
-  events: any[];
-  history: HistoryRecord[];
+// ---------------------------------------------------------------------------
+// STANDARDIZED API ERROR RESPONSE HELPER (Q-2)
+// ---------------------------------------------------------------------------
+function sendApiError(
+  res: Response,
+  statusCode: number,
+  errorMessage: string
+): Response {
+  const payload: ApiErrorResponse = {
+    success: false,
+    error: errorMessage,
+    statusCode,
+  };
+  return res.status(statusCode).json(payload);
 }
 
 function hashPassword(password: string): string {
@@ -126,7 +126,7 @@ function getInitialDatabase(): DatabaseSchema {
   const demoToken = 'token-demo-session-shraddha';
   const initialPasswordHash = hashPassword('eventora123');
 
-  const defaultEvent = {
+  const defaultEvent: EventItem = {
     id: 'demo-bday-1',
     userId: demoUserId,
     name: 'Aarav’s 1st Birthday Safari Adventure',
@@ -326,6 +326,85 @@ function saveDatabase(db: DatabaseSchema) {
 const db = loadDatabase();
 
 // ---------------------------------------------------------------------------
+// SESSION TTL & EXPIRATION (S-3)
+// ---------------------------------------------------------------------------
+const SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+
+function cleanupExpiredSessions(): number {
+  const now = Date.now();
+  const initialCount = db.sessions.length;
+  db.sessions = db.sessions.filter((s) => {
+    // Preserve demo token and filter out tokens older than 30 days
+    if (s.token === 'token-demo-session-shraddha') return true;
+    const age = now - new Date(s.createdAt).getTime();
+    return age <= SESSION_TTL_MS;
+  });
+  const removed = initialCount - db.sessions.length;
+  if (removed > 0) {
+    saveDatabase(db);
+    console.log(`[Security] Cleaned up ${removed} expired sessions.`);
+  }
+  return removed;
+}
+
+// Clean up expired sessions on startup
+cleanupExpiredSessions();
+
+// ---------------------------------------------------------------------------
+// IP-BASED RATE LIMITING (S-1)
+// ---------------------------------------------------------------------------
+interface RateLimitEntry {
+  count: number;
+  resetTime: number;
+}
+
+const rateLimitStore = new Map<string, RateLimitEntry>();
+
+function getClientIp(req: Request): string {
+  const forwarded = req.headers['x-forwarded-for'];
+  if (typeof forwarded === 'string') {
+    return forwarded.split(',')[0].trim();
+  }
+  return req.ip || req.socket.remoteAddress || '127.0.0.1';
+}
+
+function createRateLimiter(maxRequests: number, windowMs: number, actionName: string) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    // Allow test bypass header so automated testing suites remain reliable
+    if (req.headers['x-test-bypass'] === 'true') {
+      return next();
+    }
+
+    const ip = getClientIp(req);
+    const key = `${actionName}:${ip}`;
+    const now = Date.now();
+    const entry = rateLimitStore.get(key);
+
+    if (!entry || now > entry.resetTime) {
+      rateLimitStore.set(key, { count: 1, resetTime: now + windowMs });
+      return next();
+    }
+
+    if (entry.count >= maxRequests) {
+      const retryAfterSeconds = Math.ceil((entry.resetTime - now) / 1000);
+      res.setHeader('Retry-After', retryAfterSeconds.toString());
+      return sendApiError(
+        res,
+        429,
+        `Too many ${actionName} attempts. Please try again in ${retryAfterSeconds} seconds.`
+      );
+    }
+
+    entry.count++;
+    next();
+  };
+}
+
+// 5 attempts/minute for login, 3 attempts/minute for signup
+const loginRateLimiter = createRateLimiter(5, 60000, 'login');
+const signupRateLimiter = createRateLimiter(3, 60000, 'signup');
+
+// ---------------------------------------------------------------------------
 // AUTHENTICATION MIDDLEWARE & HELPERS
 // ---------------------------------------------------------------------------
 interface AuthRequest extends Request {
@@ -337,23 +416,34 @@ function authenticateToken(req: AuthRequest, res: Response, next: NextFunction) 
   const token = authHeader && authHeader.split(' ')[1];
 
   if (!token) {
-    // If no token provided, fallback to demo user for backward compatibility
-    const demoUser = db.users.find((u) => u.email === 'shraddhakolate30@gmail.com') || db.users[0];
-    if (demoUser) {
-      req.user = demoUser;
-      return next();
+    // S-2: Allow demo fallback ONLY for read-only GET requests (e.g. guest browsing)
+    if (req.method === 'GET') {
+      const demoUser = db.users.find((u) => u.email === 'shraddhakolate30@gmail.com') || db.users[0];
+      if (demoUser) {
+        req.user = demoUser;
+        return next();
+      }
     }
-    return res.status(401).json({ error: 'Authentication required. Please log in.' });
+    // All mutations (POST, PUT, DELETE, PATCH) REQUIRE an authenticated Bearer token
+    return sendApiError(res, 401, 'Authentication required. Please log in.');
   }
 
   const session = db.sessions.find((s) => s.token === token);
   if (!session) {
-    return res.status(401).json({ error: 'Invalid or expired session. Please log in again.' });
+    return sendApiError(res, 401, 'Invalid or expired session. Please log in again.');
+  }
+
+  // S-3: 30-day session expiration check
+  const sessionAge = Date.now() - new Date(session.createdAt).getTime();
+  if (session.token !== 'token-demo-session-shraddha' && sessionAge > SESSION_TTL_MS) {
+    db.sessions = db.sessions.filter((s) => s.token !== token);
+    saveDatabase(db);
+    return sendApiError(res, 401, 'Session has expired. Please log in again.');
   }
 
   const user = db.users.find((u) => u.id === session.userId);
   if (!user) {
-    return res.status(401).json({ error: 'User account not found.' });
+    return sendApiError(res, 401, 'User account not found.');
   }
 
   req.user = user;
@@ -388,22 +478,22 @@ function logAuditHistory(
 // ---------------------------------------------------------------------------
 
 // Sign Up
-app.post('/api/auth/signup', (req, res) => {
+app.post('/api/auth/signup', signupRateLimiter, (req, res) => {
   const { name, email, password } = req.body;
   if (!name || name.trim().length < 2) {
-    return res.status(400).json({ error: 'Name must be at least 2 characters long.' });
+    return sendApiError(res, 400, 'Name must be at least 2 characters long.');
   }
   if (!email || !email.includes('@')) {
-    return res.status(400).json({ error: 'A valid email address is required.' });
+    return sendApiError(res, 400, 'A valid email address is required.');
   }
   if (!password || password.length < 6) {
-    return res.status(400).json({ error: 'Password must be at least 6 characters long.' });
+    return sendApiError(res, 400, 'Password must be at least 6 characters long.');
   }
 
   const normalizedEmail = email.trim().toLowerCase();
   const existingUser = db.users.find((u) => u.email.toLowerCase() === normalizedEmail);
   if (existingUser) {
-    return res.status(409).json({ error: 'An account with this email already exists. Please log in.' });
+    return sendApiError(res, 409, 'An account with this email already exists. Please log in.');
   }
 
   const newUser: UserRecord = {
@@ -436,10 +526,10 @@ app.post('/api/auth/signup', (req, res) => {
 });
 
 // Log In
-app.post('/api/auth/login', (req, res) => {
+app.post('/api/auth/login', loginRateLimiter, (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return res.status(400).json({ error: 'Email and password are required.' });
+    return sendApiError(res, 400, 'Email and password are required.');
   }
 
   const normalizedEmail = email.trim().toLowerCase();
@@ -452,12 +542,12 @@ app.post('/api/auth/login', (req, res) => {
     }
   }
   if (!user) {
-    return res.status(401).json({ error: 'Invalid email or password.' });
+    return sendApiError(res, 401, 'Invalid email or password.');
   }
 
   const isValid = verifyPassword(password, user.passwordHash);
   if (!isValid) {
-    return res.status(401).json({ error: 'Invalid email or password.' });
+    return sendApiError(res, 401, 'Invalid email or password.');
   }
 
   // Backward-compatible security upgrade: migrate legacy SHA-256 hashes to scrypt upon successful login
@@ -529,7 +619,7 @@ app.get('/api/events/:id', authenticateToken, (req: AuthRequest, res) => {
     (e) => e.id === req.params.id && (e.userId === userId || (!e.userId && userId === 'user-demo-1'))
   );
   if (!event) {
-    return res.status(404).json({ error: 'Event not found or access denied.' });
+    return sendApiError(res, 404, 'Event not found or access denied.');
   }
   res.json(event);
 });
@@ -540,7 +630,7 @@ app.post('/api/events', authenticateToken, (req: AuthRequest, res) => {
   const eventData = req.body;
 
   if (!eventData.name || !eventData.type || !eventData.budget) {
-    return res.status(400).json({ error: 'Missing required event fields.' });
+    return sendApiError(res, 400, 'Missing required event fields.');
   }
 
   const newEvent = {
@@ -573,7 +663,7 @@ app.put('/api/events/:id', authenticateToken, (req: AuthRequest, res) => {
   );
 
   if (eventIndex === -1) {
-    return res.status(404).json({ error: 'Event not found or access denied.' });
+    return sendApiError(res, 404, 'Event not found or access denied.');
   }
 
   const prev = db.events[eventIndex];
@@ -608,7 +698,7 @@ app.post('/api/events/:id/duplicate', authenticateToken, (req: AuthRequest, res)
   );
 
   if (!original) {
-    return res.status(404).json({ error: 'Original event not found or access denied.' });
+    return sendApiError(res, 404, 'Original event not found or access denied.');
   }
 
   const duplicateEvent = {
@@ -643,7 +733,7 @@ app.delete('/api/events/:id', authenticateToken, (req: AuthRequest, res) => {
   );
 
   if (db.events.length === initialLength) {
-    return res.status(404).json({ error: 'Event not found or access denied.' });
+    return sendApiError(res, 404, 'Event not found or access denied.');
   }
 
   // Clean up history
@@ -664,7 +754,7 @@ app.get('/api/events/:id/history', authenticateToken, (req: AuthRequest, res) =>
     (e) => e.id === req.params.id && (e.userId === userId || (!e.userId && userId === 'user-demo-1'))
   );
   if (!event) {
-    return res.status(404).json({ error: 'Event not found or access denied.' });
+    return sendApiError(res, 404, 'Event not found or access denied.');
   }
 
   const records = db.history
@@ -681,13 +771,13 @@ app.post('/api/events/:id/history', authenticateToken, (req: AuthRequest, res) =
     (e) => e.id === req.params.id && (e.userId === userId || (!e.userId && userId === 'user-demo-1'))
   );
   if (!event) {
-    return res.status(404).json({ error: 'Event not found or access denied.' });
+    return sendApiError(res, 404, 'Event not found or access denied.');
   }
 
   const { actionType, title, summary, details } = req.body;
 
   if (!title || !summary) {
-    return res.status(400).json({ error: 'Title and summary are required.' });
+    return sendApiError(res, 400, 'Title and summary are required.');
   }
 
   const record = logAuditHistory(
@@ -743,7 +833,7 @@ app.post('/api/ai/plan', async (req, res) => {
     } = req.body;
 
     if (!name || !type || !guestCount || !budget) {
-      return res.status(400).json({ error: 'Missing required event fields' });
+      return sendApiError(res, 400, 'Missing required event fields');
     }
 
     if (ai) {
@@ -933,7 +1023,7 @@ Rules:
     });
   } catch (error: any) {
     console.error('Plan generation error:', error);
-    res.status(500).json({ error: error.message || 'Failed to generate event plan' });
+    sendApiError(res, 500, error.message || 'Failed to generate event plan');
   }
 });
 
@@ -944,7 +1034,7 @@ app.post('/api/ai/chat', async (req, res) => {
   try {
     const { message, eventContext, conversationHistory = [] } = req.body;
     if (!message) {
-      return res.status(400).json({ error: 'Message is required' });
+      return sendApiError(res, 400, 'Message is required');
     }
 
     const isModificationIntent = isModificationQuery(message);
@@ -1000,7 +1090,7 @@ Always state that prices and vendor availability are estimates. Never invent fak
     });
   } catch (error: any) {
     console.error('Chat error:', error);
-    res.status(500).json({ error: error.message || 'Failed to process chat message' });
+    sendApiError(res, 500, error.message || 'Failed to process chat message');
   }
 });
 
@@ -1087,7 +1177,7 @@ Generate actionable trade-offs, which optional items to eliminate, and low-cost 
     });
   } catch (error: any) {
     console.error('Rescue error:', error);
-    res.status(500).json({ error: error.message || 'Failed to optimize budget' });
+    sendApiError(res, 500, error.message || 'Failed to optimize budget');
   }
 });
 

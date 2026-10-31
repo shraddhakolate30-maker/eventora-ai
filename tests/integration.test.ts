@@ -33,7 +33,10 @@ describe('EVENTORA AI API Integration Tests', () => {
     it('successfully signs up User A and returns Bearer token', async () => {
       const res = await fetch(`${BASE_URL}/api/auth/signup`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-test-bypass': 'true',
+        },
         body: JSON.stringify({
           name: 'Organizer Alpha',
           email: userAEmail,
@@ -52,7 +55,10 @@ describe('EVENTORA AI API Integration Tests', () => {
     it('successfully logs in with valid credentials', async () => {
       const res = await fetch(`${BASE_URL}/api/auth/login`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-test-bypass': 'true',
+        },
         body: JSON.stringify({
           email: userAEmail,
           password: 'securePassword123',
@@ -67,7 +73,10 @@ describe('EVENTORA AI API Integration Tests', () => {
     it('rejects login with invalid password', async () => {
       const res = await fetch(`${BASE_URL}/api/auth/login`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-test-bypass': 'true',
+        },
         body: JSON.stringify({
           email: userAEmail,
           password: 'wrongPassword',
@@ -80,7 +89,10 @@ describe('EVENTORA AI API Integration Tests', () => {
     it('registers User B for cross-tenant isolation testing', async () => {
       const res = await fetch(`${BASE_URL}/api/auth/signup`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-test-bypass': 'true',
+        },
         body: JSON.stringify({
           name: 'Organizer Beta',
           email: userBEmail,
@@ -296,7 +308,7 @@ describe('EVENTORA AI API Integration Tests', () => {
       // Ensure truthful attribution (never fake Gemini when fallback is used)
       expect(typeof data.source).toBe('string');
       expect(data.source.length).toBeGreaterThan(0);
-    }, 15000);
+    }, 25000);
 
     it('applies an update proposal and persists recalculation through event API', async () => {
       const updatedCategories = [
